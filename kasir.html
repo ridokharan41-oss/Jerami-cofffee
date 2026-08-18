@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasir - Jerami Coffee</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+display:flex;
+background:#f5f5f5;
+}
+
+.sidebar{
+    
+width:230px;
+background:#6F4E37;
+height:100vh;
+color:white;
+padding:20px;
+position:fixed;
+}
+
+.sidebar h2
+{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:8px 0;
+text-decoration:none;
+color:white;
+border-radius:8px;
+transition:.3s;
+}
+.logo-box{
+    text-align:center;
+    margin-bottom:25px;
+    padding-bottom:15px;
+    border-bottom:1px solid rgba(255,255,255,.2);
+}
+
+.logo-box img{
+    width:85px;
+    height:85px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#fff;
+    border:3px solid #fff;
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+
+.logo-box h2{
+    margin-top:10px;
+    font-size:22px;
+    color:white;
+}
+
+.logo-box p{
+    font-size:12px;
+    color:#F5E6D3;
+    letter-spacing:1px;
+}
+.sidebar a:hover{
+background:#8B5E3C;
+}
+
+.main{
+margin-left:230px;
+width:100%;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.search{
+width:350px;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.container{
+display:flex;
+gap:20px;
+}
+
+.produk{
+flex:2;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+text-align:center;
+}
+
+.card img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.card h3{
+margin:10px 0;
+}
+
+.card button{
+margin-top:10px;
+background:#6F4E37;
+color:white;
+border:none;
+padding:10px;
+width:100%;
+border-radius:8px;
+cursor:pointer;
+}
+
+.keranjang{
+width:350px;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+height:fit-content;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+margin:10px 0;
+border-bottom:1px solid #ddd;
+padding-bottom:8px;
+}
+
+.qty button{
+width:25px;
+height:25px;
+}
+
+.total{
+margin-top:20px;
+font-size:20px;
+font-weight:bold;
+}
+
+.bayar{
+margin-top:20px;
+width:100%;
+padding:12px;
+background:green;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:18px;
+}
+/* ===========================
+   RESPONSIVE HP & TABLET
+=========================== */
+
+@media (max-width: 768px){
+
+body{
+    display:block;
+}
+
+/* Sidebar menjadi atas */
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+    padding:15px;
+}
+
+.sidebar h2{
+    margin-bottom:15px;
+}
+
+.sidebar a{
+    display:inline-block;
+    width:48%;
+    margin:3px 1%;
+    text-align:center;
+    font-size:14px;
+}
+
+/* Main full */
+.main{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+}
+
+/* Header */
+.header{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+}
+
+.search{
+    width:100%;
+}
+
+/* Produk & Keranjang */
+.container{
+    flex-direction:column;
+}
+
+.produk{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.keranjang{
+    width:100%;
+}
+
+.card img{
+    height:120px;
+}
+
+.card h3{
+    font-size:15px;
+}
+
+.bayar{
+    position:sticky;
+    bottom:10px;
+}
+
+}
+
+/* HP kecil */
+@media (max-width:480px){
+
+.produk{
+    grid-template-columns:1fr;
+}
+
+.sidebar a{
+    width:100%;
+}
+
+.card img{
+    height:160px;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="logo-box">
+    <img src="logo.png" alt="Jerami Coffee Logo">
+    <h2>Jerami Coffee</h2>
+    <p>COFFEE • MOCKTAIL</p>
+</div>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="kasir.html">🛒 Kasir</a>
+<a href="menu.html">📦 Kelola Menu</a>
+<a href="riwayat.html">📋 Riwayat</a>
+<a href="laporan.html">📊 Laporan</a>
+<a href="login.html">🚪 Logout</a></div>
+
+<div class="main">
+
+<div class="header">
+
+<div>
+    <h2 style="color:#6F4E37;">☕ Kasir Jerami Coffee</h2>
+    <p style="color:#777;">Sistem Point of Sale</p>
+</div>
+
+<input
+type="text"
+id="cari"
+class="search"
+placeholder="🔍 Cari Menu..."
+onkeyup="cariMenu()">
+
+</div>
+
+<div class="container">
+
+<div class="produk" id="produk"></div>
+
+<div class="keranjang">
+
+<h3>🛒 Keranjang</h3>
+
+<div id="cart"></div>
+
+<div class="total">
+
+Total :
+<span id="total">Rp0</span>
+
+</div>
+
+<button class="bayar" onclick="bayar()">
+
+Bayar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+let menuDipilih = null;
+let menu=JSON.parse(localStorage.getItem("menu"))||[];
+
+let keranjang=[];
+function pilihVarian(index){
+
+menuDipilih = menu[index];
+
+document.getElementById("judulMenu").innerHTML =
+menuDipilih.nama;
+
+document.getElementById("hargaHotText").innerHTML =
+" Rp "+Number(menuDipilih.hargaHot).toLocaleString("id-ID");
+
+if(menuDipilih.kategori=="Snack"){
+
+document.querySelector("input[value='Ice']").parentElement.style.display="none";
+
+}else{
+
+document.querySelector("input[value='Ice']").parentElement.style.display="block";
+
+document.getElementById("hargaIceText").innerHTML =
+" Rp "+Number(menuDipilih.hargaIce).toLocaleString("id-ID");
+
+}
+
+document.getElementById("modalVarian").style.display="block";
+
+}function tampilProduk(data){
+
+    let html = "";
+
+    data.forEach(item => {
+
+        const indexAsli = menu.indexOf(item);
+
+        html += `
+        <div class="card">
+
+            <img src="${item.foto || 'https://via.placeholder.com/200'}">
+
+            <h3>${item.nama}</h3>
+
+            <p>☕ Hot : Rp ${Number(item.hargaHot).toLocaleString("id-ID")}</p>
+
+            ${
+                item.kategori !== "Snack"
+                ? `<p>🧊 Ice : Rp ${Number(item.hargaIce).toLocaleString("id-ID")}</p>`
+                : ""
+            }
+
+            <p>Stok : ${item.stok}</p>
+
+            <button onclick="pilihVarian(${indexAsli})">
+                Tambah
+            </button>
+
+        </div>`;
+    });
+
+    document.getElementById("produk").innerHTML = html;
+}
+function masukKeranjang(){
+
+    if(!menuDipilih){
+        alert("Menu belum dipilih!");
+        return;
+    }
+
+    let varian = document.querySelector(
+        "input[name='pilihVarian']:checked"
+    ).value;
+
+    let harga =
+        varian === "Hot"
+        ? Number(menuDipilih.hargaHot)
+        : Number(menuDipilih.hargaIce);
+
+    let ada = keranjang.find(item =>
+        item.nama === menuDipilih.nama &&
+        item.varian === varian
+    );
+
+    if(ada){
+        ada.qty++;
+    }else{
+        keranjang.push({
+            nama: menuDipilih.nama,
+            varian: varian,
+            harga: harga,
+            qty: 1
+        });
+    }
+
+    tutupModal();
+    tampilCart();
+}
+function tampilProduk(data){
+
+    let html="";
+
+    data.forEach(item=>{
+
+        const indexAsli = menu.indexOf(item);
+
+        html += `
+        <div class="card">
+
+            <img src="${item.foto || 'https://via.placeholder.com/200'}">
+
+            <h3>${item.nama}</h3>
+
+            <p>☕ Hot : Rp ${Number(item.hargaHot).toLocaleString('id-ID')}</p>
+
+            ${
+                item.kategori !== "Snack"
+                ? `<p>🧊 Ice : Rp ${Number(item.hargaIce).toLocaleString('id-ID')}</p>`
+                : ""
+            }
+
+            <p>Stok : ${item.stok}</p>
+
+            <button onclick="pilihVarian(${indexAsli})">
+                Tambah
+            </button>
+
+        </div>`;
+    });
+
+    document.getElementById("produk").innerHTML = html;
+}
+
+tutupModal();
+
+tampilCart();
+html += `
+<div class="item">
+
+    <div>
+        <b>${item.nama}</b><br>
+        <small>${item.varian}</small><br>
+        Rp ${item.harga.toLocaleString("id-ID")}
+    </div>
+
+    <div class="qty">
+        <button onclick="kurang(${index})">-</button>
+        ${item.qty}
+        <button onclick="tambahQty(${index})">+</button>
+    </div>
+
+</div>
+`;
+
+function tampilCart(){
+
+let html="";
+
+let total=0;
+
+keranjang.forEach((item,index)=>{
+
+total+=item.harga*item.qty;
+
+html+=`
+
+<div class="item">
+
+<div>
+
+<b>${item.nama}</b>
+
+<br>
+
+<small>${item.varian}</small>
+
+Rp ${item.harga.toLocaleString('id-ID')}
+
+</div>
+
+<div class="qty">
+
+<button onclick="kurang(${index})">-</button>
+
+${item.qty}
+
+<button onclick="tambahQty(${index})">+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("cart").innerHTML=html;
+
+document.getElementById("total").innerHTML=
+"Rp "+total.toLocaleString("id-ID");
+
+}
+
+function tambahQty(i){
+
+keranjang[i].qty++;
+
+tampilCart();
+
+}
+
+function kurang(i){
+
+keranjang[i].qty--;
+
+if(keranjang[i].qty<=0){
+
+keranjang.splice(i,1);
+
+}
+
+tampilCart();
+
+}
+
+function cariMenu(){
+
+    const keyword = document
+        .getElementById("cari")
+        .value
+        .toLowerCase();
+
+    const hasil = menu.filter(item =>
+        item.nama.toLowerCase().includes(keyword)
+    );
+
+    tampilProduk(hasil);
+}
+function tutupModal(){
+
+document.getElementById("modalVarian").style.display="none";
+
+}
+function bayar(){
+
+    if(keranjang.length==0){
+        alert("Keranjang masih kosong");
+        return;
+    }
+
+    // Hitung total
+    let total = 0;
+
+    keranjang.forEach(item=>{
+        total += item.harga * item.qty;
+    });
+
+    // Data transaksi
+    let transaksi = {
+        noTransaksi : "TRX"+Date.now(),
+        tanggal : new Date().toLocaleDateString("id-ID"),
+        jam : new Date().toLocaleTimeString("id-ID"),
+        kasir : "Admin",
+        metode : "Tunai",
+        total : total,
+        items : keranjang
+    };
+
+    // Simpan transaksi sementara
+    localStorage.setItem("struk",JSON.stringify(transaksi));
+
+    // Simpan riwayat
+    let riwayat = JSON.parse(localStorage.getItem("riwayat")) || [];
+
+    riwayat.push(transaksi);
+
+    localStorage.setItem("riwayat",JSON.stringify(riwayat));
+
+    // Kurangi stok menu
+    menu.forEach(produk=>{
+
+        keranjang.forEach(item=>{
+
+            if(produk.nama==item.nama){
+
+                produk.stok -= item.qty;
+
+            }
+
+        });
+
+    });
+
+    localStorage.setItem("menu",JSON.stringify(menu));
+
+    // Kosongkan keranjang
+    keranjang=[];
+
+    // Pindah ke struk
+    window.location.href="struk.html";
+// Simpan keranjang untuk checkout
+localStorage.setItem("keranjang", JSON.stringify(keranjang));
+}
+
+</script>
+<div id="modalVarian" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.5);">
+
+<div style="background:#fff;width:350px;padding:20px;border-radius:10px;margin:100px auto;">
+
+<h3 id="judulMenu"></h3>
+
+<label>
+<input type="radio" name="pilihVarian" value="Hot" checked>
+☕ Hot
+<span id="hargaHotText"></span>
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="pilihVarian" value="Ice">
+🧊 Ice
+<span id="hargaIceText"></span>
+</label>
+
+<br><br>
+
+<button onclick="masukKeranjang()">Tambah ke Keranjang</button>
+
+<button onclick="tutupModal()">Batal</button>
+
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelola Menu - Jerami Coffee</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f4f4;
+display:flex;
+}
+
+.sidebar{
+width:230px;
+height:100vh;
+background:#6F4E37;
+color:white;
+padding:20px;
+position:fixed;
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:12px;
+margin:8px 0;
+color:white;
+text-decoration:none;
+border-radius:8px;
+}
+
+.sidebar a:hover{
+background:#8B5E3C;
+}
+
+.main{
+margin-left:230px;
+width:100%;
+padding:25px;
+}
+
+.form{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+.form input,
+.form select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+.form button{
+padding:10px 20px;
+background:#6F4E37;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+table{
+width:100%;
+background:white;
+border-collapse:collapse;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#6F4E37;
+color:white;
+}
+
+img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.edit{
+background:orange;
+color:white;
+border:none;
+padding:8px;
+cursor:pointer;
+border-radius:5px;
+}
+
+.hapus{
+background:red;
+color:white;
+border:none;
+padding:8px;
+cursor:pointer;
+border-radius:5px;
+}
+
+.search{
+width:300px;
+padding:10px;
+margin-bottom:15px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+/* ===========================
+   RESPONSIVE HP & TABLET
+=========================== */
+
+@media (max-width: 768px){
+
+body{
+    display:block;
+}
+
+/* Sidebar menjadi atas */
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+    padding:15px;
+}
+
+.sidebar h2{
+    margin-bottom:15px;
+}
+
+.sidebar a{
+    display:inline-block;
+    width:48%;
+    margin:3px 1%;
+    text-align:center;
+    font-size:14px;
+}
+
+/* Main full */
+.main{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+}
+
+/* Header */
+.header{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+}
+
+.search{
+    width:100%;
+}
+
+/* Produk & Keranjang */
+.container{
+    flex-direction:column;
+}
+
+.produk{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.keranjang{
+    width:100%;
+}
+
+.card img{
+    height:120px;
+}
+
+.card h3{
+    font-size:15px;
+}
+
+.bayar{
+    position:sticky;
+    bottom:10px;
+}
+
+}
+
+/* HP kecil */
+@media (max-width:480px){
+
+.produk{
+    grid-template-columns:1fr;
+}
+
+.sidebar a{
+    width:100%;
+}
+
+.card img{
+    height:160px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>☕ Jerami Coffee</h2>
+
+<a href="dashboard.html">Dashboard</a>
+<a href="kasir.html">Kasir</a>
+<a href="menu.html">Kelola Menu</a>
+<a href="riwayat.html">Riwayat</a>
+<a href="laporan.html">Laporan</a>
+
+</div>
+
+<div class="main">
+
+<h2>Kelola Menu</h2>
+
+<div class="form">
+
+<input type="text" id="nama" placeholder="Nama Menu">
+
+<input type="number" id="hargaHot" placeholder="Harga Hot">
+
+<input type="number" id="hargaIce" placeholder="Harga Ice">
+
+<input type="number" id="stok" placeholder="Stok">
+
+<select id="kategori" onchange="cekVarian()">
+
+<option value="Coffee">Coffee</option>
+
+<option value="Non Coffee">Non Coffee</option>
+
+<option value="Snack">Snack</option>
+
+</select>
+<input type="file" id="foto" accept="image/*">
+
+<button onclick="simpanMenu()">Simpan Menu</button>
+
+</div>
+
+<input
+class="search"
+type="text"
+placeholder="Cari Menu..."
+onkeyup="cariMenu(this.value)">
+
+<table>
+
+<thead>
+
+<tr>
+
+
+<tr>
+    <th>No</th>
+    <th>Foto</th>
+    <th>Nama</th>
+    <th>Kategori</th>
+    <th>Harga Hot</th>
+    <th>Harga Ice</th>
+    <th>Stok</th>
+    <th>Aksi</th>
+</tr>
+
+</thead>
+
+<tbody id="tabelMenu">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+function cekVarian(){
+
+let kategori = document.getElementById("kategori").value;
+
+let hargaIce = document.getElementById("hargaIce");
+
+if(kategori=="Snack"){
+
+    hargaIce.style.display="none";
+
+}else{
+
+    hargaIce.style.display="block";
+
+}
+
+}
+let menu = JSON.parse(localStorage.getItem("menu")) || [];
+let editIndex = -1;
+
+function simpanMenu(){
+
+let nama=document.getElementById("nama").value;
+let kategori=document.getElementById("kategori").value;
+let hargaHot=document.getElementById("hargaHot").value;
+let hargaIce=document.getElementById("hargaIce").value;
+let stok=document.getElementById("stok").value;
+let file=document.getElementById("foto").files[0];
+
+if(
+    nama=="" ||
+    hargaHot=="" ||
+    (kategori!="Snack" && hargaIce=="") ||
+    stok==""
+){
+    alert("Lengkapi data.");
+    return;
+}
+
+if(file){
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+simpanData(e.target.result);
+
+}
+
+reader.readAsDataURL(file);
+
+}else{
+
+simpanData("");
+
+}
+
+function simpanData(foto){
+
+let data={
+
+
+nama,
+kategori,
+hargaHot,
+hargaIce,
+stok,
+foto
+
+};
+
+if(editIndex==-1){
+
+menu.push(data);
+
+}else{
+if(foto==""){
+
+data.foto=menu[editIndex].foto;
+
+}
+
+menu[editIndex]=data;
+
+editIndex=-1;
+
+}
+
+localStorage.setItem("menu",JSON.stringify(menu));
+
+resetForm();
+
+tampil(menu);
+
+}
+
+}
+
+function tampil(data){
+
+let html="";
+
+data.forEach((item,index)=>{
+
+html += `
+<tr>
+
+<td>${index+1}</td>
+
+<td>
+<img src="${item.foto || 'https://via.placeholder.com/70'}">
+</td>
+
+<td>${item.nama}</td>
+
+<td>${item.kategori}</td>
+
+<td>Rp ${Number(item.hargaHot).toLocaleString('id-ID')}</td>
+
+<td>${
+item.kategori=="Snack"
+?
+"-"
+:
+"Rp "+Number(item.hargaIce).toLocaleString('id-ID')
+}</td>
+
+<td>${item.stok}</td>
+
+<td>
+
+<button class="edit" onclick="editMenu(${index})">
+✏ Edit
+</button>
+
+<button class="hapus" onclick="hapusMenu(${index})">
+🗑 Hapus
+</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("tabelMenu").innerHTML=html;
+
+}
+
+function editMenu(index){
+
+let item=menu[index];
+
+document.getElementById("nama").value=item.nama;
+document.getElementById("hargaHot").value = item.hargaHot;
+document.getElementById("hargaIce").value = item.hargaIce || "";
+document.getElementById("stok").value = item.stok;
+document.getElementById("kategori").value = item.kategori;
+
+cekVarian();
+editIndex=index;
+
+}
+
+function hapusMenu(index){
+
+if(confirm("Hapus menu ini?")){
+
+menu.splice(index,1);
+
+localStorage.setItem("menu",JSON.stringify(menu));
+
+tampil(menu);
+
+}
+
+}
+
+function cariMenu(keyword){
+
+keyword=keyword.toLowerCase();
+
+let hasil=menu.filter(item=>item.nama.toLowerCase().includes(keyword));
+
+tampil(hasil);
+
+}
+
+function resetForm(){
+
+document.getElementById("nama").value="";
+document.getElementById("hargaHot").value="";
+document.getElementById("hargaIce").value="";
+document.getElementById("stok").value="";
+document.getElementById("foto").value="";
+document.getElementById("kategori").value="Coffee";
+
+editIndex = -1;
+
+cekVarian();
+}
+
+tampil(menu);
+
+</script>
+
+</body>
+</html>

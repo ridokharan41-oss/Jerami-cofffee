@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Struk Jerami Coffee</title>
+
+<style>
+.star{
+
+font-size:35px;
+
+cursor:pointer;
+
+color:#ccc;
+
+transition:.3s;
+
+}
+
+.star:hover{
+
+transform:scale(1.2);
+
+}
+
+.star.active{
+
+color:gold;
+
+}
+
+#nilaiRating{
+
+margin-top:10px;
+
+font-size:14px;
+
+font-weight:bold;
+
+color:#444;
+
+}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Courier New',monospace;
+}
+
+body{
+background:#eee;
+display:flex;
+justify-content:center;
+padding:30px;
+}
+
+/* =======================
+THERMAL 80 MM
+======================= */
+
+.struk{
+
+width:80mm;
+background:white;
+padding:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+
+}
+
+/*
+Jika printer 58mm
+ubah menjadi
+
+width:58mm;
+
+*/
+
+.center{
+
+text-align:center;
+
+}
+
+hr{
+
+border:none;
+border-top:1px dashed black;
+margin:8px 0;
+
+}
+
+table{
+
+width:100%;
+font-size:12px;
+
+}
+
+td{
+
+padding:2px 0;
+
+}
+
+.total{
+
+font-weight:bold;
+font-size:14px;
+
+}
+
+.footer{
+
+text-align:center;
+margin-top:10px;
+font-size:12px;
+
+}
+
+.btn{
+
+margin-top:20px;
+display:flex;
+gap:10px;
+justify-content:center;
+
+}
+
+button{
+
+padding:10px 18px;
+cursor:pointer;
+border:none;
+border-radius:5px;
+font-size:15px;
+
+}
+
+.print{
+
+background:#28a745;
+color:white;
+
+}
+
+.back{
+
+background:#6F4E37;
+color:white;
+
+}
+
+@media print{
+
+body{
+
+background:white;
+
+}
+
+.btn{
+
+display:none;
+
+}
+
+.struk{
+
+box-shadow:none;
+
+}
+
+}
+/* ===========================
+   RESPONSIVE HP & TABLET
+=========================== */
+
+@media (max-width: 768px){
+
+body{
+    display:block;
+}
+
+/* Sidebar menjadi atas */
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+    padding:15px;
+}
+
+.sidebar h2{
+    margin-bottom:15px;
+}
+
+.sidebar a{
+    display:inline-block;
+    width:48%;
+    margin:3px 1%;
+    text-align:center;
+    font-size:14px;
+}
+
+/* Main full */
+.main{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+}
+
+/* Header */
+.header{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+}
+
+.search{
+    width:100%;
+}
+
+/* Produk & Keranjang */
+.container{
+    flex-direction:column;
+}
+
+.produk{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.keranjang{
+    width:100%;
+}
+
+.card img{
+    height:120px;
+}
+
+.card h3{
+    font-size:15px;
+}
+
+.bayar{
+    position:sticky;
+    bottom:10px;
+}
+
+}
+
+/* HP kecil */
+@media (max-width:480px){
+
+.produk{
+    grid-template-columns:1fr;
+}
+
+.sidebar a{
+    width:100%;
+}
+
+.card img{
+    height:160px;
+}
+
+}
+</style>
+
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<body>
+
+<div>
+
+<div class="struk" id="printArea">
+
+<div class="center">
+
+<h2>☕ JERAMI COFFEE</h2>
+
+<p>Jl. Jerami Coffee</p>
+
+<p>0812-xxxx-xxxx</p>
+
+</div>
+
+<hr>
+
+<table>
+
+<tr>
+
+<td>No</td>
+
+<td>:</td>
+
+<td id="kode"></td>
+
+</tr>
+
+<tr>
+
+<td>Tanggal</td>
+
+<td>:</td>
+
+<td id="tanggal"></td>
+
+</tr>
+
+<tr>
+
+<td>Jam</td>
+
+<td>:</td>
+
+<td id="jam"></td>
+
+</tr>
+
+<tr>
+
+<td>Kasir</td>
+
+<td>:</td>
+
+<td id="kasir"></td>
+
+</tr>
+
+<tr>
+
+<td>Bayar</td>
+
+<td>:</td>
+
+<td id="metode"></td>
+
+</tr>
+
+</table>
+
+<hr>
+
+<table id="produk">
+
+</table>
+
+<hr>
+
+<table>
+
+<tr class="total">
+
+<td>Total</td>
+
+<td align="right" id="total"></td>
+
+</tr>
+
+</table>
+
+<hr>
+
+<div class="footer">
+
+🙏 Terima Kasih 🙏
+<hr>
+
+<div class="footer">
+
+<h4>Berikan Penilaian</h4>
+
+<div id="rating">
+
+<span class="star" onclick="beriRating(1)">☆</span>
+<span class="star" onclick="beriRating(2)">☆</span>
+<span class="star" onclick="beriRating(3)">☆</span>
+<span class="star" onclick="beriRating(4)">☆</span>
+<span class="star" onclick="beriRating(5)">☆</span>
+
+</div>
+
+<p id="nilaiRating"></p>
+
+</div>
+<br>
+
+Selamat Menikmati
+
+<br><br>
+
+Jerami Coffee
+
+</div>
+
+</div>
+
+<div class="btn">
+
+<button class="print" onclick="window.print()">
+
+🖨 Cetak Struk
+
+</button>
+
+<button onclick="downloadPDF()">
+
+📥 Download PDF
+
+</button>
+
+<button class="back"
+
+onclick="location.href='index.html'">
+
+🏠 Dashboard
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+function beriRating(nilai){
+
+let stars=document.querySelectorAll(".star");
+
+stars.forEach((bintang,index)=>{
+
+if(index<nilai){
+
+bintang.classList.add("active");
+
+bintang.innerHTML="★";
+
+}else{
+
+bintang.classList.remove("active");
+
+bintang.innerHTML="☆";
+
+}
+
+});
+
+document.getElementById("nilaiRating").innerHTML=
+
+"Terima kasih atas penilaian " + nilai + " ⭐";
+
+localStorage.setItem("rating",nilai);
+
+}
+let trx=JSON.parse(localStorage.getItem("struk"));
+
+if(!trx){
+
+alert("Data struk tidak ditemukan");
+
+location.href="index.html";
+
+}
+
+document.getElementById("kode").innerHTML=trx.kode;
+
+document.getElementById("tanggal").innerHTML=trx.tanggal;
+
+document.getElementById("jam").innerHTML=
+new Date().toLocaleTimeString("id-ID");
+
+document.getElementById("kasir").innerHTML=
+localStorage.getItem("namaAdmin") || "Admin";
+
+document.getElementById("metode").innerHTML=
+trx.metode;
+
+document.getElementById("total").innerHTML=
+"Rp "+trx.total.toLocaleString("id-ID");
+
+let html="";
+
+trx.items.forEach(item=>{
+
+html+=`
+
+<tr>
+
+<td colspan="2">
+
+${item.nama}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+${item.qty} x Rp ${item.harga.toLocaleString('id-ID')}
+
+</td>
+
+<td align="right">
+
+Rp ${(item.qty*item.harga).toLocaleString('id-ID')}
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("produk").innerHTML=html;
+
+</script>
+
+</body>
+</html>

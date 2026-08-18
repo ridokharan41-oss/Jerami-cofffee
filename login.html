@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin - Jerami Coffee</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#6F4E37,#D2B48C);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.login-box{
+    width:380px;
+    background:#fff;
+    border-radius:15px;
+    padding:35px;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+.logo{
+    text-align:center;
+    font-size:60px;
+}
+
+h2{
+    text-align:center;
+    color:#6F4E37;
+    margin-bottom:25px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+}
+
+.input-group input:focus{
+    border-color:#6F4E37;
+}
+
+.show-password{
+    display:flex;
+    align-items:center;
+    margin-top:-5px;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+.show-password input{
+    margin-right:8px;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    background:#6F4E37;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+button:hover{
+    background:#4E342E;
+}
+
+#error{
+    color:red;
+    text-align:center;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#777;
+    font-size:13px;
+}
+/* ===========================
+   RESPONSIVE HP & TABLET
+=========================== */
+
+@media (max-width: 768px){
+
+body{
+    display:block;
+}
+
+/* Sidebar menjadi atas */
+.sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+    padding:15px;
+}
+
+.sidebar h2{
+    margin-bottom:15px;
+}
+
+.sidebar a{
+    display:inline-block;
+    width:48%;
+    margin:3px 1%;
+    text-align:center;
+    font-size:14px;
+}
+
+/* Main full */
+.main{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+}
+
+/* Header */
+.header{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+}
+
+.search{
+    width:100%;
+}
+
+/* Produk & Keranjang */
+.container{
+    flex-direction:column;
+}
+
+.produk{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.keranjang{
+    width:100%;
+}
+
+.card img{
+    height:120px;
+}
+
+.card h3{
+    font-size:15px;
+}
+
+.bayar{
+    position:sticky;
+    bottom:10px;
+}
+
+}
+
+/* HP kecil */
+@media (max-width:480px){
+
+.produk{
+    grid-template-columns:1fr;
+}
+
+.sidebar a{
+    width:100%;
+}
+
+.card img{
+    height:160px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+
+<div class="logo">☕</div>
+
+<h2>Jerami Coffee POS</h2>
+
+<div class="input-group">
+<label>Username</label>
+<input type="text" id="username" placeholder="Masukkan Username">
+</div>
+
+<div class="input-group">
+<label>Password</label>
+<input type="password" id="password" placeholder="Masukkan Password">
+</div>
+
+<div class="show-password">
+<input type="checkbox" onclick="lihatPassword()">
+<span>Lihat Password</span>
+</div>
+
+<button onclick="login()">
+LOGIN
+</button>
+
+<p id="error"></p>
+
+<div class="footer">
+© 2026 Jerami Coffee
+</div>
+
+</div>
+
+<script>
+
+const akun={    
+    username:"RakaJMC",
+    password:"4321JMC"
+};
+
+if(localStorage.getItem("login")=="true"){
+    window.location.href="dashboard.html";
+}
+
+function login(){
+
+    let user=document.getElementById("username").value.trim();
+    let pass=document.getElementById("password").value.trim();
+
+    if(user==akun.username && pass==akun.password){
+
+        localStorage.setItem("login","true");
+
+        localStorage.setItem("namaAdmin","Administrator");
+
+        alert("Login Berhasil");
+
+        window.location.href="dashboard.html";
+
+    }else{
+
+        document.getElementById("error").innerHTML=
+        "Username atau Password salah!";
+
+    }
+
+}
+
+function lihatPassword(){
+
+    let pass=document.getElementById("password");
+
+    if(pass.type=="password"){
+
+        pass.type="text";
+
+    }else{
+
+        pass.type="password";
+
+    }
+
+}
+
+document.addEventListener("keypress",function(e){
+
+    if(e.key==="Enter"){
+
+        login();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
