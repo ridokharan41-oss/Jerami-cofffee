@@ -339,7 +339,14 @@ Logout
 </div>
 
 <div class="menu-cepat">
+<div class="menu-box"
+     onclick="location.href='pengeluaran.html'">
 
+    <h2>💸</h2>
+
+    Pengeluaran
+
+</div>
 <div class="menu-box" onclick="location.href='kasir.html'">
 
 <h2>🛒</h2>
@@ -399,15 +406,53 @@ document.getElementById("totalMenu").innerHTML=menu.length;
 // Total Transaksi
 document.getElementById("totalTransaksi").innerHTML=riwayat.length;
 
-// Hitung Omzet
-let omzet=0;
+// ===============================
+// HITUNG OMZET PENJUALAN
+// ===============================
 
-riwayat.forEach(item=>{
-omzet+=Number(item.total);
+let omzet = 0;
+
+riwayat.forEach(item => {
+
+    omzet += Number(item.total) || 0;
+
 });
 
-document.getElementById("omzet").innerHTML=
-"Rp "+omzet.toLocaleString("id-ID");
+document.getElementById("omzet").innerHTML =
+    "Rp " + omzet.toLocaleString("id-ID");
+
+
+// ===============================
+// HITUNG TOTAL PENGELUARAN
+// ===============================
+
+let pengeluaran =
+    JSON.parse(
+        localStorage.getItem("pengeluaran")
+    ) || [];
+
+let totalPengeluaran = 0;
+
+pengeluaran.forEach(item => {
+
+    totalPengeluaran +=
+        Number(item.nominal) || 0;
+
+});
+
+document.getElementById("pengeluaran").innerHTML =
+    "Rp " + totalPengeluaran.toLocaleString("id-ID");
+
+
+// ===============================
+// HITUNG LABA BERSIH
+// ===============================
+
+let labaBersih =
+    omzet - totalPengeluaran;
+
+document.getElementById("labaBersih").innerHTML =
+    "Rp " + labaBersih.toLocaleString("id-ID");
 
 // Hitung Stok Hampir Habis
 let stok=0;
