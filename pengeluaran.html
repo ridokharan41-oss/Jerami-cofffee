@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pengeluaran - Jerami Coffee</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f5f5f5;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:240px;
+    height:100vh;
+    background:#6F4E37;
+    color:white;
+    position:fixed;
+    left:0;
+    top:0;
+    padding:20px;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    padding:13px;
+    margin:8px 0;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    transition:.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#8B5E3C;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    margin-left:240px;
+    width:100%;
+    padding:30px;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:#6F4E37;
+}
+
+/* ================= SUMMARY ================= */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:25px;
+}
+
+.summary-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.summary-card h3{
+    color:#777;
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.summary-card .angka{
+    font-size:25px;
+    font-weight:bold;
+    color:#6F4E37;
+}
+
+/* ================= FORM ================= */
+
+.form-card{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.form-card h2{
+    color:#6F4E37;
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    padding:11px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:80px;
+}
+
+.form-full{
+    grid-column:1 / -1;
+}
+
+.btn-container{
+    margin-top:15px;
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    border:none;
+    padding:11px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    color:white;
+    font-size:15px;
+}
+
+.btn-simpan{
+    background:#6F4E37;
+}
+
+.btn-simpan:hover{
+    background:#8B5E3C;
+}
+
+.btn-batal{
+    background:#777;
+    display:none;
+}
+
+/* ================= SEARCH ================= */
+
+.toolbar{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.search{
+    width:350px;
+    padding:11px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+/* ================= TABLE ================= */
+
+.table-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:800px;
+}
+
+th,
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+th{
+    background:#6F4E37;
+    color:white;
+}
+
+tr:hover{
+    background:#fafafa;
+}
+
+/* ================= BUTTON TABLE ================= */
+
+.edit{
+    background:#f0ad4e;
+    border:none;
+    color:white;
+    padding:7px 10px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.hapus{
+    background:#dc3545;
+    border:none;
+    color:white;
+    padding:7px 10px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.edit:hover{
+    background:#d99532;
+}
+
+.hapus:hover{
+    background:#c82333;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    body{
+        display:block;
+    }
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        padding:15px;
+    }
+
+    .sidebar h2{
+        margin-bottom:15px;
+    }
+
+    .sidebar a{
+        display:inline-block;
+        width:48%;
+        margin:3px 1%;
+        text-align:center;
+        font-size:14px;
+    }
+
+    .main{
+        margin-left:0;
+        padding:15px;
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-full{
+        grid-column:auto;
+    }
+
+    .toolbar{
+        flex-direction:column;
+    }
+
+    .search{
+        width:100%;
+    }
+
+    .btn-container{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <h2>☕ Jerami Coffee</h2>
+
+    <a href="index.html">🏠 Dashboard</a>
+
+    <a href="kasir.html">🛒 Kasir</a>
+
+    <a href="menu.html">📦 Kelola Menu</a>
+
+    <a href="riwayat.html">📋 Riwayat</a>
+
+    <a href="laporan.html">📊 Laporan</a>
+
+    <a href="pengeluaran.html" class="active">
+        💸 Pengeluaran
+    </a>
+
+    <a href="login.html">🚪 Logout</a>
+
+</div>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+    <div class="header">
+
+        <div>
+            <h1>Pengeluaran</h1>
+            <p>Catat dan kelola pengeluaran Jerami Coffee</p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= SUMMARY ================= -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+
+            <h3>Total Pengeluaran</h3>
+
+            <div class="angka" id="totalPengeluaran">
+                Rp 0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>Jumlah Pengeluaran</h3>
+
+            <div class="angka" id="jumlahPengeluaran">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>Pengeluaran Bulan Ini</h3>
+
+            <div class="angka" id="pengeluaranBulan">
+                Rp 0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FORM ================= -->
+
+    <div class="form-card">
+
+        <h2 id="judulForm">
+            ➕ Tambah Pengeluaran
+        </h2>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Tanggal</label>
+
+                <input
+                    type="date"
+                    id="tanggal">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Kategori</label>
+
+                <select id="kategori">
+
+                    <option value="">
+                        -- Pilih Kategori --
+                    </option>
+
+                    <option value="Bahan Baku">
+                        Bahan Baku
+                    </option>
+
+                    <option value="Listrik">
+                        Listrik
+                    </option>
+
+                    <option value="Air">
+                        Air
+                    </option>
+
+                    <option value="Sewa">
+                        Sewa Tempat
+                    </option>
+
+                    <option value="Gaji">
+                        Gaji
+                    </option>
+
+                    <option value="Peralatan">
+                        Peralatan
+                    </option>
+
+                    <option value="Konsumsi">
+                        Konsumsi
+                    </option>
+
+                    <option value="Transportasi">
+                        Transportasi
+                    </option>
+ <option value="Oprasional">
+                        Oprasional
+                    </option>
+                    <option value="Lainnya">
+                        Lainnya
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group form-full">
+
+                <label>Keterangan</label>
+
+                <textarea
+                    id="keterangan"
+                    placeholder="Contoh: Membeli biji kopi 5 kg">
+                </textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Nominal Pengeluaran</label>
+
+                <input
+                    type="number"
+                    id="nominal"
+                    placeholder="Contoh: 150000"
+                    min="0">
+
+            </div>
+
+        </div>
+
+
+        <div class="btn-container">
+
+            <button
+                class="btn btn-simpan"
+                onclick="simpanPengeluaran()"
+                id="btnSimpan">
+
+                💾 Simpan Pengeluaran
+
+            </button>
+
+
+            <button
+                class="btn btn-batal"
+                onclick="batalEdit()"
+                id="btnBatal">
+
+                ❌ Batal
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TOOLBAR ================= -->
+
+    <div class="toolbar">
+
+        <input
+            type="text"
+            class="search"
+            id="search"
+            placeholder="🔎 Cari pengeluaran..."
+            onkeyup="cariPengeluaran()">
+
+    </div>
+
+
+    <!-- ================= TABLE ================= -->
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+
+                    <th>Tanggal</th>
+
+                    <th>Kategori</th>
+
+                    <th>Keterangan</th>
+
+                    <th>Nominal</th>
+
+                    <th>Aksi</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tabelPengeluaran">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   DATA PENGELUARAN
+===================================== */
+
+let pengeluaran =
+    JSON.parse(
+        localStorage.getItem("pengeluaran")
+    ) || [];
+
+let editIndex = -1;
+
+
+/* =====================================
+   TANGGAL HARI INI
+===================================== */
+
+document.getElementById("tanggal").value =
+    new Date().toISOString().split("T")[0];
+
+
+/* =====================================
+   FORMAT RUPIAH
+===================================== */
+
+function rupiah(angka){
+
+    return "Rp " +
+        Number(angka).toLocaleString("id-ID");
+
+}
+
+
+/* =====================================
+   SIMPAN
+===================================== */
+
+function simpanPengeluaran(){
+
+    let tanggal =
+        document.getElementById("tanggal").value;
+
+    let kategori =
+        document.getElementById("kategori").value;
+
+    let keterangan =
+        document.getElementById("keterangan").value.trim();
+
+    let nominal =
+        Number(
+            document.getElementById("nominal").value
+        );
+
+
+    if(!tanggal ||
+       !kategori ||
+       !keterangan ||
+       !nominal){
+
+        alert("Lengkapi semua data pengeluaran.");
+
+        return;
+    }
+
+
+    let data = {
+
+        tanggal: tanggal,
+
+        kategori: kategori,
+
+        keterangan: keterangan,
+
+        nominal: nominal
+
+    };
+
+
+    /* TAMBAH */
+
+    if(editIndex === -1){
+
+        pengeluaran.push(data);
+
+    }
+
+    /* EDIT */
+
+    else{
+
+        pengeluaran[editIndex] = data;
+
+        editIndex = -1;
+
+        document.getElementById("judulForm")
+            .innerHTML =
+            "➕ Tambah Pengeluaran";
+
+        document.getElementById("btnSimpan")
+            .innerHTML =
+            "💾 Simpan Pengeluaran";
+
+        document.getElementById("btnBatal")
+            .style.display = "none";
+
+    }
+
+
+    localStorage.setItem(
+        "pengeluaran",
+        JSON.stringify(pengeluaran)
+    );
+
+
+    resetForm();
+
+    tampilPengeluaran(pengeluaran);
+
+    hitungTotal();
+
+}
+
+
+/* =====================================
+   TAMPIL DATA
+===================================== */
+
+function tampilPengeluaran(data){
+
+    let html = "";
+
+
+    if(data.length === 0){
+
+        html = `
+
+        <tr>
+
+            <td
+                colspan="6"
+                class="empty">
+
+                Belum ada data pengeluaran.
+
+            </td>
+
+        </tr>
+
+        `;
+
+    }
+
+
+    data.forEach((item,index)=>{
+
+        let indexAsli =
+            pengeluaran.indexOf(item);
+
+
+        html += `
+
+        <tr>
+
+            <td>${index+1}</td>
+
+            <td>
+                ${formatTanggal(item.tanggal)}
+            </td>
+
+            <td>
+                ${item.kategori}
+            </td>
+
+            <td>
+                ${item.keterangan}
+            </td>
+
+            <td>
+                <b>
+                    ${rupiah(item.nominal)}
+                </b>
+            </td>
+
+            <td>
+
+                <button
+                    class="edit"
+                    onclick="editPengeluaran(${indexAsli})">
+
+                    ✏️ Edit
+
+                </button>
+
+
+                <button
+                    class="hapus"
+                    onclick="hapusPengeluaran(${indexAsli})">
+
+                    🗑️ Hapus
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    document.getElementById(
+        "tabelPengeluaran"
+    ).innerHTML = html;
+
+}
+
+
+/* =====================================
+   FORMAT TANGGAL
+===================================== */
+
+function formatTanggal(tanggal){
+
+    let parts =
+        tanggal.split("-");
+
+    return parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0];
+
+}
+
+
+/* =====================================
+   EDIT
+===================================== */
+
+function editPengeluaran(index){
+
+    let item =
+        pengeluaran[index];
+
+
+    document.getElementById("tanggal")
+        .value = item.tanggal;
+
+
+    document.getElementById("kategori")
+        .value = item.kategori;
+
+
+    document.getElementById("keterangan")
+        .value = item.keterangan;
+
+
+    document.getElementById("nominal")
+        .value = item.nominal;
+
+
+    editIndex = index;
+
+
+    document.getElementById("judulForm")
+        .innerHTML =
+        "✏️ Edit Pengeluaran";
+
+
+    document.getElementById("btnSimpan")
+        .innerHTML =
+        "💾 Update Pengeluaran";
+
+
+    document.getElementById("btnBatal")
+        .style.display =
+        "block";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =====================================
+   BATAL EDIT
+===================================== */
+
+function batalEdit(){
+
+    editIndex = -1;
+
+    resetForm();
+
+    document.getElementById("judulForm")
+        .innerHTML =
+        "➕ Tambah Pengeluaran";
+
+
+    document.getElementById("btnSimpan")
+        .innerHTML =
+        "💾 Simpan Pengeluaran";
+
+
+    document.getElementById("btnBatal")
+        .style.display =
+        "none";
+
+}
+
+
+/* =====================================
+   HAPUS
+===================================== */
+
+function hapusPengeluaran(index){
+
+    if(!confirm(
+        "Yakin ingin menghapus pengeluaran ini?"
+    )){
+
+        return;
+
+    }
+
+
+    pengeluaran.splice(index,1);
+
+
+    localStorage.setItem(
+        "pengeluaran",
+        JSON.stringify(pengeluaran)
+    );
+
+
+    tampilPengeluaran(pengeluaran);
+
+    hitungTotal();
+
+}
+
+
+/* =====================================
+   RESET
+===================================== */
+
+function resetForm(){
+
+    document.getElementById("tanggal")
+        .value =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    document.getElementById("kategori")
+        .value = "";
+
+
+    document.getElementById("keterangan")
+        .value = "";
+
+
+    document.getElementById("nominal")
+        .value = "";
+
+}
+
+
+/* =====================================
+   HITUNG TOTAL
+===================================== */
+
+function hitungTotal(){
+
+    let total = 0;
+
+
+    pengeluaran.forEach(item=>{
+
+        total += Number(item.nominal);
+
+    });
+
+
+    document.getElementById(
+        "totalPengeluaran"
+    ).innerHTML =
+        rupiah(total);
+
+
+    document.getElementById(
+        "jumlahPengeluaran"
+    ).innerHTML =
+        pengeluaran.length;
+
+
+    /* BULAN INI */
+
+    let sekarang =
+        new Date();
+
+
+    let bulan =
+        sekarang.getMonth();
+
+
+    let tahun =
+        sekarang.getFullYear();
+
+
+    let totalBulan = 0;
+
+
+    pengeluaran.forEach(item=>{
+
+        let tanggal =
+            new Date(item.tanggal);
+
+
+        if(
+            tanggal.getMonth() === bulan &&
+            tanggal.getFullYear() === tahun
+        ){
+
+            totalBulan +=
+                Number(item.nominal);
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "pengeluaranBulan"
+    ).innerHTML =
+        rupiah(totalBulan);
+
+}
+
+
+/* =====================================
+   SEARCH
+===================================== */
+
+function cariPengeluaran(){
+
+    let keyword =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+
+    let hasil =
+        pengeluaran.filter(item =>
+
+            item.kategori
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            item.keterangan
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            item.tanggal
+                .includes(keyword)
+
+        );
+
+
+    tampilPengeluaran(hasil);
+
+}
+
+
+/* =====================================
+   LOAD
+===================================== */
+
+tampilPengeluaran(pengeluaran);
+
+hitungTotal();
+
+</script>
+
+</body>
+</html>
