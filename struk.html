@@ -217,6 +217,14 @@ body{
 }
 
 }
+.nama-pemesan{
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    text-transform:uppercase;
+    margin:5px 0;
+    word-wrap:break-word;
+}
 </style>
 
 </head>
@@ -235,13 +243,20 @@ body{
 <hr>
 
 <div class="info">
-No : <span id="no"></span><br>
-Tanggal : <span id="tanggal"></span><br>
-Jam : <span id="jam"></span><br>
-Kasir : <span id="kasir"></span><br>
-Pembayaran : <span id="metode"></span>
-</div>
 
+    <div class="nama-pemesan">
+        <span id="namaPemesan"></span>
+    </div>
+
+    <br>
+
+    No : <span id="no"></span><br>
+    Tanggal : <span id="tanggal"></span><br>
+    Jam : <span id="jam"></span><br>
+    Kasir : <span id="kasir"></span><br>
+    Pembayaran : <span id="metode"></span>
+
+</div>
 <hr>
 
 <table>
@@ -328,12 +343,15 @@ if(!data){
 }
 
 document.getElementById("no").innerHTML = data.noTransaksi;
+document.getElementById("namaPemesan").innerHTML =
+    data.namaPemesan || "-";
 document.getElementById("tanggal").innerHTML = data.tanggal;
 document.getElementById("jam").innerHTML = data.jam;
 document.getElementById("kasir").innerHTML = data.kasir;
 document.getElementById("metode").innerHTML = data.metode;
 document.getElementById("total").innerHTML =
 "Rp " + data.total.toLocaleString("id-ID");
+
 
 let html="";
 
