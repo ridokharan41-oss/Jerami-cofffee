@@ -269,6 +269,30 @@ body{
 }
 
 }
+.nama-pemesan{
+    margin:15px 0;
+}
+
+.nama-pemesan label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+    color:#6F4E37;
+}
+
+.nama-pemesan input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
+
+.nama-pemesan input:focus{
+    border-color:#6F4E37;
+    box-shadow:0 0 5px rgba(111,78,55,.2);
+}
 </style>
 
 </head>
@@ -286,8 +310,8 @@ body{
 <a href="kasir.html">🛒 Kasir</a>
 <a href="menu.html">📦 Kelola Menu</a>
 <a href="riwayat.html">📋 Riwayat</a>
+<a href="pengeluaran.html">💸 Pengeluaran</a>
 <a href="laporan.html">📊 Laporan</a>
-    <a href="pengeluaran.html">💸 Pengeluaran</a>
 <a href="login.html">🚪 Logout</a></div>
 
 <div class="main">
@@ -315,6 +339,18 @@ onkeyup="cariMenu()">
 <div class="keranjang">
 
 <h3>🛒 Keranjang</h3>
+
+<!-- NAMA PEMESAN -->
+<div class="nama-pemesan">
+    <label for="namaPemesan">👤 Nama Pemesan</label>
+
+    <input
+        type="text"
+        id="namaPemesan"
+        placeholder="Masukkan nama pemesan..."
+        autocomplete="off"
+    >
+</div>
 
 <div id="cart"></div>
 
@@ -583,8 +619,22 @@ document.getElementById("modalVarian").style.display="none";
 }
 function bayar(){
 
-    if(keranjang.length==0){
-        alert("Keranjang masih kosong");
+    // Cek keranjang
+    if(keranjang.length === 0){
+        alert("Keranjang masih kosong!");
+        return;
+    }
+
+    // Ambil nama pemesan
+    let namaPemesan = document
+        .getElementById("namaPemesan")
+        .value
+        .trim();
+
+    // Cek nama pemesan
+    if(namaPemesan === ""){
+        alert("Silakan masukkan nama pemesan terlebih dahulu!");
+        document.getElementById("namaPemesan").focus();
         return;
     }
 
@@ -592,38 +642,67 @@ function bayar(){
     let total = 0;
 
     keranjang.forEach(item=>{
-        total += item.harga * item.qty;
+        total += Number(item.harga) * Number(item.qty);
     });
+
+    // Waktu transaksi
+    let sekarang = new Date();
 
     // Data transaksi
     let transaksi = {
-        noTransaksi : "TRX"+Date.now(),
-        tanggal : new Date().toLocaleDateString("id-ID"),
-        jam : new Date().toLocaleTimeString("id-ID"),
-        kasir : "Admin",
+
+        noTransaksi : "TRX" + Date.now(),
+
+        namaPemesan : namaPemesan,
+
+        tanggal : sekarang.toLocaleDateString("id-ID"),
+
+        jam : sekarang.toLocaleTimeString("id-ID"),
+
+        kasir : localStorage.getItem("namaAdmin") || "Admin",
+
         metode : "Tunai",
+
         total : total,
-        items : keranjang
+
+        items : keranjang.map(item => ({
+            nama : item.nama,
+            varian : item.varian,
+            harga : Number(item.harga),
+            qty : Number(item.qty)
+        }))
+
     };
 
-    // Simpan transaksi sementara
-    localStorage.setItem("struk",JSON.stringify(transaksi));
+    // Simpan data struk
+    localStorage.setItem(
+        "struk",
+        JSON.stringify(transaksi)
+    );
 
     // Simpan riwayat
-    let riwayat = JSON.parse(localStorage.getItem("riwayat")) || [];
+    let riwayat =
+        JSON.parse(localStorage.getItem("riwayat")) || [];
 
     riwayat.push(transaksi);
 
-    localStorage.setItem("riwayat",JSON.stringify(riwayat));
+    localStorage.setItem(
+        "riwayat",
+        JSON.stringify(riwayat)
+    );
 
-    // Kurangi stok menu
-    menu.forEach(produk=>{
+    // Kurangi stok
+    menu.forEach(produk => {
 
-        keranjang.forEach(item=>{
+        keranjang.forEach(item => {
 
-            if(produk.nama==item.nama){
+            if(produk.nama === item.nama){
 
-                produk.stok -= item.qty;
+                produk.stok =
+                    Math.max(
+                        0,
+                        Number(produk.stok) - Number(item.qty)
+                    );
 
             }
 
@@ -631,17 +710,15 @@ function bayar(){
 
     });
 
-    localStorage.setItem("menu",JSON.stringify(menu));
+    // Simpan menu terbaru
+    localStorage.setItem(
+        "menu",
+        JSON.stringify(menu)
+    );
 
-    // Kosongkan keranjang
-    keranjang=[];
-
-    // Pindah ke struk
-    window.location.href="struk.html";
-// Simpan keranjang untuk checkout
-localStorage.setItem("keranjang", JSON.stringify(keranjang));
+    // Pindah ke halaman struk
+    window.location.href = "struk.html";
 }
-
 </script>
 <div id="modalVarian" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.5);">
 
